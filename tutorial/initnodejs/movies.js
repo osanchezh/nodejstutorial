@@ -1,18 +1,6 @@
-const express=require('express');
-const app=express();
-const path= require('path');
+const express = require('express');
+const route = express.Router();
 
-const Joi= require('joi');
-const movies = require('./movies');
-app.use(express.json());//trabajar con post get
-
-app.use('/abc',movies);
-
-app.use('/api/movies',(req,res,next)=>{
-    console.log(req.url, req.method);
-    next();
-});
-/*
 const movies= [{id:1,name:'a'},
     {id:2,name:'a'},
     {id:3,name:'b'},
@@ -21,15 +9,15 @@ const movies= [{id:1,name:'a'},
     {id:6,name:'e'}
 ];
 
-app.get('/',(req,res)=>{
+route.get('/',(req,res)=>{
     res.send('Hello from nodemon');
 });
 
-app.get('/api/movies',(req,res)=>{
+route.get('/api/movies',(req,res)=>{
     res.send(movies);
 });
 
-app.get('/api/movies/:id',(req,res)=>{
+route.get('/api/movies/:id',(req,res)=>{
     let movie=movies.find(c=>parseInt(c.id)===parseInt(req.params.id));
 
     if(!movie){
@@ -40,7 +28,7 @@ app.get('/api/movies/:id',(req,res)=>{
    
 });
 
-app.post('/api/movies',(req,res)=>{
+route.post('/api/movies',(req,res)=>{
     const schema= Joi.object({
         name: Joi.string().min(3).required()
     });
@@ -63,7 +51,7 @@ app.post('/api/movies',(req,res)=>{
     res.send(movie);
 });
 
-app.put('/api/movies/:id', (req,res)=>{
+route.put('/api/movies/:id', (req,res)=>{
     let movie=movies.find(c=>parseInt(c.id)===parseInt(req.params.id));
 
     if(!movie){
@@ -85,7 +73,7 @@ app.put('/api/movies/:id', (req,res)=>{
     res.send(movie);
 });
 
-app.delete('/api/movies/:id',(req,res)=>{
+route.delete('/api/movies/:id',(req,res)=>{
     let movie=movies.find(c=>parseInt(c.id)===parseInt(req.params.id));
     if(!movie){
         res.send(`no movie for id:${req.params.id}`);   
@@ -94,24 +82,5 @@ app.delete('/api/movies/:id',(req,res)=>{
     movies.splice(index,1);
     res.send(movie);
 });
-*/
 
-app.get('/index',(req,res)=>{
-    res.sendFile(path.join(__dirname,"index.html"));
-    console.log(__dirname);
-});
-
-app.get('/person',(req,res)=>{
-    res.send('Hello from nodemon from person');
-});
-
-app.get('/person/:name/:age',(req,res)=>{
-    
-    console.log(req.params);
-    
-    res.send(req.query);
-    //res.send('Hello from nodemon from person');
-});
-
-const port =process.env.PORT || '5000';
-app.listen(port,()=>console.log(`listen to port:${port}`));
+module.exports = route;
